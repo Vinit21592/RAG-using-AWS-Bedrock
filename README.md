@@ -22,7 +22,7 @@ conda activate llmapp
 pip install -r requirements.txt
 ```
 
-### 3. Run your application
+### 4. Run your application
 
 ```bash
 streamlit run main.py
