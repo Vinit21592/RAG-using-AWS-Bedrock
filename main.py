@@ -1,3 +1,4 @@
+import os
 import boto3
 import streamlit as st
 from langchain.llms.bedrock import Bedrock
@@ -7,7 +8,13 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
+from dotenv import load_dotenv
 
+load_dotenv()
+
+aws_access_key_id = os.environ.get("aws_access_key_id")
+aws_secret_access_key = os.environ.get("aws_secret_access_key")
+region_name = os.environ.get("region_name")
 
 prompt_template = """
 
@@ -25,7 +32,10 @@ Assistant:"""
 
 
 #Bedrock Client
-bedrock = boto3.client(service_name = "bedrock-runtime", region_name = "us-east-1")
+bedrock = boto3.client(service_name = "bedrock-runtime", 
+                       region_name = region_name,
+                       aws_access_key_id = aws_access_key_id,
+                       aws_secret_access_key = aws_secret_access_key)
 
 #Get embeddings model from bedrock
 bedrock_embedding = BedrockEmbeddings(model_id="amazon.titan-embed-text-v1", client=bedrock)
